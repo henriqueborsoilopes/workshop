@@ -40,4 +40,9 @@ public class UserService {
 		userDTO = UserMapper.toDTO(userRepository.insert(UserMapper.fromDTO(userDTO)));
 		return userDTO;
 	}
+
+	public void deleteById(String id) {
+		findById(id);
+		userRepository.deleteById(id);
+	}
 }
