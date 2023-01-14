@@ -45,4 +45,12 @@ public class UserService {
 		findById(id);
 		userRepository.deleteById(id);
 	}
+
+	@Transactional
+	public UserDTO update(UserDTO userDTO) {
+		if (userDTO.getId() == null || !userRepository.existsById(userDTO.getId())) {
+			throw new ObjectNotFoundException(userDTO.getId());
+		}
+		return UserMapper.toDTO(userRepository.save(UserMapper.fromDTO(userDTO)));
+	}
 }
