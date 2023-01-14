@@ -37,10 +37,10 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
 		userDTO = userService.insert(userDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.getId()).toUri(); 
-		return ResponseEntity.created(uri).body(userDTO);
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -49,8 +49,10 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping
-	public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO) {
-		return ResponseEntity.ok().body(userService.update(userDTO));
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO userDTO) {
+		userDTO.setId(id);
+		userService.update(userDTO);
+		return ResponseEntity.noContent().build();
 	}
 }

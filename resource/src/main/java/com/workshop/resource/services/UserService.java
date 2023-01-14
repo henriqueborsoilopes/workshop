@@ -37,8 +37,7 @@ public class UserService {
 
 	@Transactional
 	public UserDTO insert(UserDTO userDTO) {
-		userDTO = UserMapper.toDTO(userRepository.insert(UserMapper.fromDTO(userDTO)));
-		return userDTO;
+		return UserMapper.toDTO(userRepository.insert(UserMapper.fromDTO(userDTO)));
 	}
 
 	public void deleteById(String id) {
@@ -47,10 +46,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(UserDTO userDTO) {
+	public void update(UserDTO userDTO) {
 		if (userDTO.getId() == null || !userRepository.existsById(userDTO.getId())) {
 			throw new ObjectNotFoundException(userDTO.getId());
 		}
-		return UserMapper.toDTO(userRepository.save(UserMapper.fromDTO(userDTO)));
+		userRepository.save(UserMapper.fromDTO(userDTO));
 	}
 }
