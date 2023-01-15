@@ -1,29 +1,33 @@
 package com.workshop.resource.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "user")
-public class User implements Serializable {
+@Document(collection = "author")
+public class Author implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private String id;
 	private String name;
-	private String email;
 	
-	public User() {
-		
+	@DBRef(lazy = true)
+	private Set<Post> posts = new HashSet<>();
+	
+	public Author() {
+			
 	}
 
-	public User(String id, String name, String email) {
+	public Author(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
 	}
 
 	public String getId() {
@@ -42,12 +46,8 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public Set<Post> getPosts() {
+		return posts;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Author other = (Author) obj;
 		return Objects.equals(id, other.id);
 	}
 }
